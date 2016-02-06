@@ -1,0 +1,427 @@
+#:kivy 1.0.9
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import ListItemButton kivy.uix.listview.ListItemButton
+#:import la kivy.adapters.listadapter
+
+#:set red [1, 0, 0, 1]
+#:set salmon [1.000, 0.447, 0.431, 1]
+#:set cantaloupe [1.000, 0.808, 0.431, 1]
+#:set banana [1.000, 0.984, 0.427, 1]
+#:set honeydew [0.808, 0.980, 0.431, 1]
+#:set flora [0.408, 0.976, 0.431, 1]
+#:set spindrift [0.408, 0.984, 0.816, 1]
+#:set ice [0.408, 0.992, 1.000, 1]
+#:set sky [0.416, 0.812, 1.000, 1]
+#:set orchid [0.431, 0.463, 1.000, 1]
+#:set lavender [0.824, 0.471, 1.000, 1]
+#:set bubblegum [1.000, 0.478, 1.000, 1]
+#:set carnation [1.000, 0.498, 0.827, 1]
+#:set maraschino [1.000, 0.129, 0.004, 1]
+#:set tangerine [1.000, 0.533, 0.008, 1]
+#:set lemon [1.000, 0.980, 0.012, 1]
+#:set lime [0.514, 0.976, 0.008, 1]
+#:set spring [0.020, 0.973, 0.008, 1]
+#:set seafoam [0.012, 0.976, 0.529, 1]
+#:set turquoise [0.000, 0.992, 1.000, 1]
+#:set aqua [0.000, 0.549, 1.000, 1]
+#:set blueberry [0.000, 0.180, 1.000, 1]
+#:set grape [0.537, 0.192, 1.000, 1]
+#:set magenta [1.000, 0.224, 1.000, 1]
+#:set strawberry [1.000, 0.161, 0.529, 1]
+#:set cayenne [0.537, 0.067, 0.000, 1]
+#:set mocha [0.537, 0.282, 0.000, 1]
+#:set aspargus [0.533, 0.522, 0.004, 1]
+#:set fern [0.271, 0.518, 0.004, 1]
+#:set clover [0.008, 0.518, 0.004, 1]
+#:set moss [0.004, 0.518, 0.282, 1]
+#:set teal [0.000, 0.525, 0.533, 1]
+#:set ocean [0.000, 0.290, 0.533, 1]
+#:set midnight [0.000, 0.094, 0.533, 1]
+#:set eggplant [0.286, 0.102, 0.533, 1]
+#:set maroon [0.537, 0.086, 0.282, 1]
+#:set plum [0.537, 0.118, 0.533, 1]
+#:set licorice [0.000, 0.000, 0.000, 1]
+#:set lead [0.118, 0.118, 0.118, 1]
+#:set tungsten [0.227, 0.227, 0.227, 1]
+#:set iron [0.329, 0.329, 0.325, 1]
+#:set steel [0.431, 0.431, 0.431, 1]
+#:set tin [0.529, 0.525, 0.529, 1]
+#:set nickel [0.533, 0.529, 0.529, 1]
+#:set aluminum [0.627, 0.624, 0.627, 1]
+#:set magnesium [0.722, 0.722, 0.722, 1]
+#:set silver [0.816, 0.816, 0.816, 1]
+#:set mercury [0.910, 0.910, 0.910, 1]
+#:set snow [1.000, 1.000, 1.000, 1]
+
+#:set primary_red [1.000, 0.000, 0.000, 1]
+#:set primary_green [0.000, 1.000, 0.000, 1]
+#:set primary_blue [0.000, 0.000, 1.000, 1]
+
+#:set primary_magenta [1.000, 0.000, 1.000, 1]
+#:set primary_cyan [1.000, 1.000, 0.000, 1]
+#:set primary_yellow [0.000, 1.000, 1.000, 1]
+
+
+
+<MyManager>:
+    #transition: FadeTransition()
+    MainScreen:
+    CocktailsScreen:
+    FlavourScreen:
+    TypeScreen:
+
+<MainScreen>:
+    name: "main"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+
+        Label:
+            canvas.before:
+                Color:
+                    # fern
+                    rgb: fern
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+            font_size: 50
+            size: self.texture_size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Cocktails"
+
+        GridLayout:
+
+            padding: 20
+            spacing: 40
+            cols: 2
+            rows: 2
+
+            Button:
+                background_color: primary_blue
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Wähle Gin als Basis"
+                on_press: app.root.current = "cocktails"
+
+
+            Button:
+                background_color: primary_magenta
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Wähle Rum als Basis"
+                on_press: app.rum_choice()
+
+            Button:
+                background_color: primary_yellow
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Wähle nach Geschmack"
+                on_press: app.root.current = "flavours"
+
+            Button:
+                background_color: primary_cyan
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Wähle nach Art"
+                on_press: app.root.current = "type"
+
+
+        Button:
+
+            # fern
+            background_color: 0.271, 0.518,	0.004, 1
+            font_size: 50
+            # size: self.texture_size
+            text_size: self.size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Do I feel lucky? Well, do ya, punk?"
+            on_press: app.lucky_choice()
+
+<FlavourScreen>:
+    name: "flavours"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+
+        Label:
+            canvas.before:
+                Color:
+                    rgb: fern
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+            font_size: 50
+            size: self.texture_size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Geschmäcke"
+
+        GridLayout:
+
+            padding: 20
+            spacing: 40
+            cols: 2
+            rows: 3
+
+            Button:
+                background_color: orchid
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "herb"
+                #on_press: app.flavour_choice("herb")
+
+            Button:
+                background_color: cayenne
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "würzig"
+                #on_press: app.flavour_choice("würzig")
+
+            Button:
+                background_color: mocha
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "trocken"
+                #on_press: app.flavour_choice("trocken")
+
+            Button:
+                background_color: honeydew
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "früchtig"
+                #on_press: app.flavour_choice("früchtig")
+
+            Button:
+                background_color: lime
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "erfrischend"
+                #on_press: app.flavour_choice("erfrischend")
+
+            Button:
+                background_color: bubblegum
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "lieblich"
+                #on_press: app.flavour_choice("lieblich")
+
+        Button:
+            background_color: teal
+            background_normal: ''
+            font_size: 50
+            text_size: self.size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Hauptmenü"
+            on_press: app.root.current = "main"
+
+
+<TypeScreen>:
+    name: "type"
+
+    #NB: We leave out Crusta here, because there is only one
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+
+        Label:
+            canvas.before:
+                Color:
+                    # fern
+                    rgb: 0.271, 0.518,	0.004, 1
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+            font_size: 50
+            size: self.texture_size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Art des Cocktails"
+
+        GridLayout:
+
+            padding: 20
+            spacing: 40
+            cols: 2
+            rows: 3
+
+            Button:
+                background_color: seafoam
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Fizz"
+                #on_press: app.type_choice("Fizz")
+
+            Button:
+                background_color: magenta
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Flip"
+                #on_press: app.type_choice("Flip")
+
+            Button:
+                background_color: strawberry
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Longdrink"
+                #on_press: app.type_choice("Longdrink")
+
+            Button:
+                background_color: carnation
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Shortdrink"
+                #on_press: app.type_choice("Shortdrink")
+
+            Button:
+                background_color: cantaloupe
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Sektcocktail"
+                #on_press: app.type_choice("Sektcocktail")
+
+            Button:
+                background_color: lime
+                background_normal: ''
+                font_size: 50
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+                text: "Sour"
+                #on_press: app.type_choice("Sour")
+
+        Button:
+            background_color: teal
+            background_normal: ''
+            font_size: 50
+            text_size: self.size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Hauptmenü"
+            on_press: app.root.current = "main"
+
+<ListItemButton>:
+    background_normal: ''
+    selected_color: carnation
+    deselected_color: cantaloupe
+    font_size: 50
+    #Adjust line spacing with text_size
+    text_size: root.width, 80
+    halign: 'center'
+    valign: 'middle'
+    size: self.text_size
+    #border: 40,40,40,40
+
+
+<MyListItemButton@SelectableView,BoxLayout>:
+    background_normal: ''
+    selected_color: carnation
+    deselected_color: cantaloupe
+    font_size: 50
+    #Adjust line spacing with text_size
+    text_size: root.width, 80
+    halign: 'center'
+    valign: 'middle'
+    size: self.text_size
+
+
+<CocktailsScreen>:
+    name: "cocktails"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+
+        Label:
+            canvas.before:
+                Color:
+                    rgb: tangerine
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+            font_size: 50
+            size: self.texture_size
+            size_hint_y: 0.3
+            halign: 'center'
+            valign: 'middle'
+            text: "Cocktail auswählen"
+
+        ListView:
+            #size_hint here only works on the size of the complete list, not the list entries
+            canvas.before:
+                Color:
+                    rgb: carnation
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+
+            adapter:
+                la.ListAdapter(
+                data=root.my_data,
+                cls=MyListItemButton,
+                selection_mode='single',
+                allow_empty_selection=True)
+
+            #adapter:
+                #sla.ListAdapter(data=["Item #{0}".format(i) for i in range(100)], cls=ListItemButton)
