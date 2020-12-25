@@ -1,7 +1,7 @@
 #:kivy 1.0.9
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
-#:import ListItemButton kivy.uix.listview.ListItemButton
-#:import la kivy.adapters.listadapter
+#:import Button kivy.uix.button.Button
+
 
 #:set red [1, 0, 0, 1]
 #:set salmon [1.000, 0.447, 0.431, 1]
@@ -358,33 +358,8 @@
             text: "Hauptmenü"
             on_press: app.root.current = "main"
 
-<ListItemButton>:
-    background_normal: ''
-    selected_color: carnation
-    deselected_color: cantaloupe
-    font_size: 50
-    #Adjust line spacing with text_size
-    text_size: root.width, 80
-    halign: 'center'
-    valign: 'middle'
-    size: self.text_size
-    #border: 40,40,40,40
-
-
-<MyListItemButton@SelectableView,BoxLayout>:
-    background_normal: ''
-    selected_color: carnation
-    deselected_color: cantaloupe
-    font_size: 50
-    #Adjust line spacing with text_size
-    text_size: root.width, 80
-    halign: 'center'
-    valign: 'middle'
-    size: self.text_size
-
-
-<CocktailsScreen>:
-    name: "cocktails"
+<CocktailsScreenOrig>:
+    name: "cocktailsorig"
 
     BoxLayout:
         orientation: 'vertical'
@@ -406,7 +381,7 @@
             valign: 'middle'
             text: "Cocktail auswählen"
 
-        ListView:
+        RecycleView:
             #size_hint here only works on the size of the complete list, not the list entries
             canvas.before:
                 Color:
@@ -416,12 +391,144 @@
                     pos: self.pos
                     size: self.size
 
-            adapter:
-                la.ListAdapter(
-                data=root.my_data,
-                cls=MyListItemButton,
-                selection_mode='single',
-                allow_empty_selection=True)
+#-----------------------------------------
 
-            #adapter:
-                #sla.ListAdapter(data=["Item #{0}".format(i) for i in range(100)], cls=ListItemButton)
+<Row@RecycleKVIDsDataViewBehavior+BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    value: ''
+    Label:
+        id: name
+    Label:
+        text: root.value
+
+<Test>:
+    name: "test"
+
+    canvas:
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    rv: rv
+    orientation: 'vertical'
+    GridLayout:
+        cols: 3
+        rows: 2
+        size_hint_y: None
+        height: dp(108)
+        padding: dp(8)
+        spacing: dp(16)
+        Button:
+            text: 'Populate list'
+            on_press: root.populate()
+        Button:
+            text: 'Sort list'
+            on_press: root.sort()
+        Button:
+            text: 'Clear list'
+            on_press: root.clear()
+        BoxLayout:
+            spacing: dp(8)
+            Button:
+                text: 'Insert new item'
+                on_press: root.insert(new_item_input.text)
+            TextInput:
+                id: new_item_input
+                size_hint_x: 0.6
+                hint_text: 'value'
+                padding: dp(10), dp(10), 0, 0
+        BoxLayout:
+            spacing: dp(8)
+            Button:
+                text: 'Update first item'
+                on_press: root.update(update_item_input.text)
+            TextInput:
+                id: update_item_input
+                size_hint_x: 0.6
+                hint_text: 'new value'
+                padding: dp(10), dp(10), 0, 0
+        Button:
+            text: 'Remove first item'
+            on_press: root.remove()
+    RecycleView:
+        id: rv
+        scroll_type: ['bars', 'content']
+        scroll_wheel_distance: dp(114)
+        bar_width: dp(10)
+        viewclass: 'Row'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            spacing: dp(2)
+
+#-----------------------------------------
+
+<CocktailsScreen>:
+    name: "cocktails"
+
+    rv: rv
+    BoxLayout:
+
+        orientation: 'vertical'
+        GridLayout:
+            cols: 3
+            rows: 2
+            size_hint_y: None
+            height: dp(108)
+            padding: dp(8)
+            spacing: dp(16)
+            Button:
+                text: 'Populate list'
+                on_press: root.populate()
+            Button:
+                text: 'Sort list'
+                on_press: root.sort()
+            Button:
+                text: 'Clear list'
+                on_press: root.clear()
+            BoxLayout:
+                spacing: dp(8)
+                Button:
+                    text: 'Insert new item'
+                    on_press: root.insert(new_item_input.text)
+                TextInput:
+                    id: new_item_input
+                    size_hint_x: 0.6
+                    hint_text: 'value'
+                    padding: dp(10), dp(10), 0, 0
+            BoxLayout:
+                spacing: dp(8)
+                Button:
+                    text: 'Update first item'
+                    on_press: root.update(update_item_input.text)
+                TextInput:
+                    id: update_item_input
+                    size_hint_x: 0.6
+                    hint_text: 'new value'
+                    padding: dp(10), dp(10), 0, 0
+            Button:
+                text: 'Remove first item'
+                on_press: root.remove()
+
+        RecycleView:
+            id: rv
+            scroll_type: ['bars', 'content']
+            scroll_wheel_distance: dp(114)
+            bar_width: dp(10)
+            viewclass: 'Row'
+            RecycleBoxLayout:
+                default_size: None, dp(56)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+                spacing: dp(2)
