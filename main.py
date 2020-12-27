@@ -42,53 +42,32 @@ def read_cocktail_recipes(database_name="cocktails.db"):
 
 class CocktailsScreen(Screen):
 
+    def on_pre_enter(self, *args):
+        self.populate()
+
+    def on_mouse_select(self, instance):
+        if (self.col1_row_controller.selected_row != instance.index
+                or self.col2_row_controller.selected_row != instance.index):
+            # Mouse clicked on row is not equal to current selected row
+            self.col1_row_controller.selected_row = instance.index
+            self.col2_row_controller.selected_row = instance.index
+
+            # Hightlight mouse clicked/selected row
+            self.col1_row_controller.select_current()
+            self.col2_row_controller.select_current()
+
     def populate(self):
         df = read_cocktail_recipes()
-#        self.rv.data = df.set_index('RecipeID').T.to_dict('records')
-        thislist = [
-            {'name.text': ''.join(sample(ascii_lowercase, 6)),
-             'value': str(randint(0, 2000))}
-            for x in range(50)]
 
+        # Data needs to be a list of dictionaries
         thislist = [{'name.text': df.iloc[x].RecipeName,
                      'value': str(df.iloc[x].RecipeID)
                      }
                     for x in range(len(df))]
 
-
         self.rv.data = thislist
 
-    def sort(self):
-        self.rv.data = sorted(self.rv.data, key=lambda x: x['name.text'])
-
-    def clear(self):
-        self.rv.data = []
-
-    def insert(self, value):
-        self.rv.data.insert(0, {
-            'name.text': value or 'default value', 'value': 'unknown'})
-
-    def update(self, value):
-        if self.rv.data:
-            self.rv.data[0]['name.text'] = value or 'default new value'
-            self.rv.refresh_from_data()
-
-    def remove(self):
-        if self.rv.data:
-            self.rv.data.pop(0)
-
 class MainScreen(Screen):
-    pass
-
-class CocktailsScreenOrig(Screen):
-    '''Implementation of a simple list view with 100 items.
-    '''
-    my_list=read_cocktail_recipes()
-    print (my_list)
-    my_string = [ ''.join(item[1]) for item in my_list ]
-    print (my_string)
-
-    my_data = ListProperty(my_string)
     pass
 
 class FlavourScreen(Screen):
