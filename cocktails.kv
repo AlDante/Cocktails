@@ -407,7 +407,7 @@
 
 <CocktailsScreen>:
     name: "cocktails"
-    AddLocationForm:
+    CocktailsList:
 
 <SelectableLabel>:
     # Draw a background to indicate selection
@@ -423,22 +423,13 @@
             pos: self.pos
             size: self.size
 
-<AddLocationForm>:
+<CocktailsList>:
     orientation: "vertical"
     id: fred
 
     # The label (selectable_cocktails) must match the variable defined in the AddLocationForm class
     # The value (selectable_cocktails_list) must match the id of the RecycleView defined below
     selectable_cocktails: selectable_cocktails_list
-
-    BoxLayout:
-        height: "40dp"
-        size_hint_y:None
-
-        Button:
-            text: "List"
-            size_hint_x: 25
-            on_press: root.list_cocktails()
 
     RecycleView:
         id: selectable_cocktails_list

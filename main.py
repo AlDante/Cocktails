@@ -69,7 +69,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         self.selected = is_selected
 
 
-class AddLocationForm(BoxLayout):
+class CocktailsList(BoxLayout):
     selectable_cocktails = ObjectProperty()
 
 class CocktailsScreen(Screen):
