@@ -66,20 +66,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
     def apply_selection(self, rv, index, is_selected):
         ''' Respond to the selection of items in the view. '''
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint([type(widget) for widget in self.walk(restrict=True)])
         self.selected = is_selected
 
 
 class AddLocationForm(BoxLayout):
     selectable_cocktails = ObjectProperty()
-
-    def list_cocktails(self):
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint([type(widget) for widget in self.walk(restrict=True)])
-        self.selectable_cocktails.data = [{'text': x['name.text']} for x in self.parent.cocktails_list]
-        print(f"self.selectable_cocktails.data={self.selectable_cocktails.data}")
-
 
 class CocktailsScreen(Screen):
     cocktails_list = ObjectProperty()
@@ -87,31 +78,12 @@ class CocktailsScreen(Screen):
     def on_pre_enter(self, *args):
         print("Screen pre-enter")
         self.populate()
-        #self.myform.selectable_cocktails = self.cocktails_list
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint([type(widget) for widget in self.walk(restrict=True)])
 
-        # form = None
-        # for child in self.children:
-        #     ids = child.ids
-        #     if 'selectable_cocktails_list' in ids:
-        #         rv = ids.get('selectable_cocktails_list')
-        #         print("rv")
-        #         break
-        #
-        # self.populate()
-        #
-        # if rv is not None:
-        #     for child in rv.children:
-        #         ids = child.ids
-        #         if 'selectable_cocktails' in ids:
-        #             form = ids.get('selectable_cocktails')
-        #             print("form")
-        #             break
-        #
-        # if form is not None:
-        #     form.list_cocktails()
-
+        form = None
+        for child in self.children:
+            if 'selectable_cocktails_list' in child.ids:
+                child.selectable_cocktails.data = [{'text': x['name.text']} for x in self.cocktails_list]
+                break
 
     def populate(self):
         df = read_cocktail_recipes()
