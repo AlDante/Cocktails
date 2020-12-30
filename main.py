@@ -8,6 +8,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -58,15 +59,29 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             rv, index, data)
 
     def on_touch_down(self, touch):
+
         ''' Add selection on touch down '''
         if super(SelectableLabel, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos) and self.selectable:
             return self.parent.select_with_touch(self.index, touch)
 
+
     def apply_selection(self, rv, index, is_selected):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
+
+        # Get cocktails list data
+        rv_parent = rv.parent
+        rv_grandparent = rv_parent.parent
+        print(rv_grandparent.ids)
+        print("Cocktail name", rv_grandparent.ids.selectable_cocktails_list.data[index]["text"])
+
+        for child in rv.parent.children:
+            if (isinstance(child, Label)):
+                print (child.text)
+                child.text = self.text
+
 
 
 class CocktailsList(BoxLayout):
@@ -76,10 +91,16 @@ class CocktailsScreen(Screen):
     cocktails_list = ObjectProperty()
 
     def on_pre_enter(self, *args):
+        """
+        Populate the list of cocktails in the child widget
+        :param args:
+        :return:
+        """
         print("Screen pre-enter")
         self.populate()
 
-        form = None
+        #assert self.ids.selectable_cocktails_list in self.children
+
         for child in self.children:
             if 'selectable_cocktails_list' in child.ids:
                 child.selectable_cocktails.data = [{'text': x['name.text']} for x in self.cocktails_list]

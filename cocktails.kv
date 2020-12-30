@@ -409,6 +409,8 @@
     CocktailsList:
 
 <SelectableLabel>:
+    id: mySelectableLabel
+
     # Draw a background to indicate selection
     canvas.before:
         Color:
@@ -451,22 +453,41 @@
             #valign: 'middle'
             text: "Gin Cocktails"
 
-    RecycleView:
-        id: selectable_cocktails_list
-        name: "rvcocktailslist"
+    BoxLayout:
+        orientation: 'horizontal'
+        padding: 20
+        spacing: 20
+        #size_hint: 1, 0.1
+
+        RecycleView:
+            id: selectable_cocktails_list
+            name: "rvcocktailslist"
 
 
-        viewclass: 'SelectableLabel'
+            viewclass: 'SelectableLabel'
 
-        SelectableRecycleBoxLayout:
-            default_size: None, dp(26)
-            default_size_hint: 1, None
-            size_hint_y: None
-            #size_hint: 1, 0.7
-            height: self.minimum_height
-            orientation: 'vertical'
-            multiselect: False
-            touch_multiselect: False
+            SelectableRecycleBoxLayout:
+                default_size: None, dp(26)
+                default_size_hint: 1, None
+                size_hint_y: None
+                #size_hint: 1, 0.7
+                height: self.minimum_height
+                orientation: 'vertical'
+                multiselect: False
+                touch_multiselect: False
+
+        Label:
+            id: cocktails_details
+            canvas.before:
+                Color:
+                    rgba: seafoam
+                Rectangle:
+                    # self here refers to the widget i.e BoxLayout
+                    pos: self.pos
+                    size: self.size
+            font_size: 50
+            size: self.texture_size
+            text: "Details"
 
     BoxLayout:
         orientation: 'vertical'
