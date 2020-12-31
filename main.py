@@ -85,7 +85,7 @@ class CocktailsList(BoxLayout):
     selectable_cocktails = ObjectProperty()
 
 class CocktailsScreen(Screen):
-    cocktails_list = ObjectProperty()
+#    cocktails_list = ObjectProperty()
 
     def on_pre_enter(self, *args):
         """
@@ -98,21 +98,21 @@ class CocktailsScreen(Screen):
 
         #assert self.ids.selectable_cocktails_list in self.children
 
+        my_app = App.get_running_app()
+        my_cocktails_list = my_app.cocktails_list
+#        self.cocktails_list = my_cocktails_list
+
         for child in self.children:
             if 'selectable_cocktails_list' in child.ids:
-                child.selectable_cocktails.data = [{'text': x['name.text']} for x in self.cocktails_list]
+#                child.selectable_cocktails.data = [{'text': x['name.text']} for x in self.cocktails_list]
+                child.selectable_cocktails.data = [{'text': x['name.text']} for x in my_cocktails_list]
                 break
 
     def populate(self):
-        df = read_cocktail_recipes()
 
-        # Data needs to be a list of dictionaries
-        thislist = [{'name.text': df.iloc[x].RecipeName,
-                     'value': str(df.iloc[x].RecipeID)
-                     }
-                    for x in range(len(df))]
-
-        self.cocktails_list = thislist
+        my_app = App.get_running_app()
+        my_cocktails_list = my_app.cocktails_list
+        self.cocktails_list = my_cocktails_list
 
 
 class MainScreen(Screen):
