@@ -66,7 +66,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if self.collide_point(*touch.pos) and self.selectable:
             return self.parent.select_with_touch(self.index, touch)
 
-
     def apply_selection(self, rv, index, is_selected):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
@@ -81,8 +80,6 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             if (isinstance(child, Label)):
                 print (child.text)
                 child.text = self.text
-
-
 
 class CocktailsList(BoxLayout):
     selectable_cocktails = ObjectProperty()
@@ -135,7 +132,10 @@ class MyManager(ScreenManager):
 
 
 class CocktailsApp(App):
+    cocktails_list = ObjectProperty()
+
     def build(self):
+        self.init_cocktails()
         return MyManager()
 
     def gin_choice(self):
@@ -161,9 +161,29 @@ class CocktailsApp(App):
         # choose a random cocktail - remain on main screen
         print('Lucky choice')
 
+    def init_cocktails(self):
+        df = read_cocktail_recipes()
 
-cocktail_recipes = read_cocktail_recipes("cocktails.db")
-print(cocktail_recipes)
+        # Data needs to be a list of dictionaries
+        thislist = [{'name.text': df.iloc[x].RecipeName,
+                     'value': str(df.iloc[x].RecipeID)
+                     }
+                    for x in range(len(df))]
+
+        self.cocktails_list = thislist
+
+    def read_cocktail_recipes(database_name="cocktails.db"):
+        '''Read the recipes from the database
+        '''
+        conn = sqlite3.connect(database_name)
+
+        df_cocktail_recipes = pd.read_sql_query("SELECT * FROM Recipes ORDER BY RecipeName", conn)
+
+        conn.close()
+
+        # print (l_cocktail_recipes)
+        print(df_cocktail_recipes)
+        return df_cocktail_recipes
 
 if __name__ == '__main__':
     CocktailsApp().run()
