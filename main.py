@@ -1,3 +1,4 @@
+import pprint
 import sqlite3
 
 import pandas as pd
@@ -8,11 +9,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen
-import pprint
+from tabulate import tabulate
 
 
 # from kivy.adapters.listadapter import ListAdapter
@@ -20,7 +20,7 @@ import pprint
 # from kivy.adapters.models import SelectableDataItem
 
 
-def read_cocktail_recipes(database_name="cocktails.db"):
+def read_cocktail_recipes2(database_name="cocktails.db"):
     '''Read the recipes from the database
     '''
     conn = sqlite3.connect(database_name)
@@ -75,17 +75,23 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         rv_grandparent = rv_parent.parent
         print(rv_grandparent.ids)
         print("Cocktail name", rv_grandparent.ids.selectable_cocktails_list.data[index]["text"])
+        print("Type", type(rv_grandparent.ids.selectable_cocktails_list.data))
+        print("Type index", type(rv_grandparent.ids.selectable_cocktails_list.data[index]))
+
+        for key, value in rv_grandparent.ids.selectable_cocktails_list.data[index].items():
+            print(key, value)
 
         for child in rv.parent.children:
             if (isinstance(child, Label)):
-                print (child.text)
+                print(child.text)
                 child.text = self.text
+
 
 class CocktailsList(BoxLayout):
     selectable_cocktails = ObjectProperty()
 
+
 class CocktailsScreen(Screen):
-#    cocktails_list = ObjectProperty()
 
     def on_pre_enter(self, *args):
         """
@@ -94,25 +100,13 @@ class CocktailsScreen(Screen):
         :return:
         """
         print("Screen pre-enter")
-        self.populate()
-
-        #assert self.ids.selectable_cocktails_list in self.children
 
         my_app = App.get_running_app()
-        my_cocktails_list = my_app.cocktails_list
-#        self.cocktails_list = my_cocktails_list
 
         for child in self.children:
             if 'selectable_cocktails_list' in child.ids:
-#                child.selectable_cocktails.data = [{'text': x['name.text']} for x in self.cocktails_list]
-                child.selectable_cocktails.data = [{'text': x['name.text']} for x in my_cocktails_list]
+                child.selectable_cocktails.data = [{'text': x['name.text']} for x in my_app.cocktails_list]
                 break
-
-    def populate(self):
-
-        my_app = App.get_running_app()
-        my_cocktails_list = my_app.cocktails_list
-        self.cocktails_list = my_cocktails_list
 
 
 class MainScreen(Screen):
@@ -162,18 +156,35 @@ class CocktailsApp(App):
         print('Lucky choice')
 
     def init_cocktails(self):
-        df = read_cocktail_recipes()
+        df = self.read_cocktail_recipes()
 
         # Data needs to be a list of dictionaries
         thislist = [{'name.text': df.iloc[x].RecipeName,
-                     'value': str(df.iloc[x].RecipeID)
+                     'value': str(df.iloc[x].RecipeID),
+                     'Gin': str(df.iloc[x].Gin),
+                     'DarkRum': str(df.iloc[x].DarkRum),
+                     'DryVermouth': str(df.iloc[x].DryVermouth),
+                     'Cointreau': str(df.iloc[x].Cointreau),
+                     'Zitronensaft': str(df.iloc[x].Zitronensaft),
+                     'Ananassaft': str(df.iloc[x].Ananassaft),
+                     'Glas': str(df.iloc[x].Glas),
+                     'Mixen': str(df.iloc[x].Mixen),
+                     'ToFinish': str(df.iloc[x].ToFinish),
+                     'Deko': str(df.iloc[x].Deko),
+                     'Geschmack': str(df.iloc[x].Geschmack),
+                     'Typ': str(df.iloc[x].Typ),
+                     'Gelegenheit': str(df.iloc[x].Gelegenheit),
+                     'Seite': str(df.iloc[x].Seite),
+                     'Anpassungen': str(df.iloc[x].Anpassungen)
                      }
                     for x in range(len(df))]
 
         self.cocktails_list = thislist
 
-    def read_cocktail_recipes(database_name="cocktails.db"):
+    def read_cocktail_recipes(self, database_name: str = "cocktails.db") -> pd.DataFrame:
         '''Read the recipes from the database
+        :database_name: name of cocktails database. Must contain a table named Recipes and a column RecipeName
+        :return: pd.DataFrame containing recipes ordered by recipe name
         '''
         conn = sqlite3.connect(database_name)
 
@@ -181,9 +192,18 @@ class CocktailsApp(App):
 
         conn.close()
 
-        # print (l_cocktail_recipes)
-        print(df_cocktail_recipes)
+        pp = pprint.PrettyPrinter(indent=4)
+
+        pp.pprint(df_cocktail_recipes)
+        print(tabulate(df_cocktail_recipes, headers='keys', tablefmt='psql'))
+
+        """
+        RecipeID|RecipeName|Gin|DarkRum|DryVermouth|Cointreau|Zitronensaft|Ananassaft|Glas|Mixen|ToFinish|
+        Deko|Geschmack|Typ|Gelegenheit|Seite|Anpassungen
+        """
+
         return df_cocktail_recipes
+
 
 if __name__ == '__main__':
     CocktailsApp().run()
