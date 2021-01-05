@@ -15,32 +15,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from tabulate import tabulate
 
 
-# from kivy.adapters.listadapter import ListAdapter
-# from kivy.uix.listview import SelectableView
-# from kivy.adapters.models import SelectableDataItem
-
-
-def read_cocktail_recipes2(database_name="cocktails.db"):
-    '''Read the recipes from the database
-    '''
-    conn = sqlite3.connect(database_name)
-    cur = conn.cursor()
-
-    # t = ('Attaboy',)
-    # cur.execute('SELECT * FROM Recipes WHERE RecipeName=?', t)
-    # print cur.fetchone()
-
-    # cur.execute('SELECT * FROM Recipes ORDER BY RecipeName')
-    # l_cocktail_recipes = cur.fetchall()
-    df_cocktail_recipes = pd.read_sql_query("SELECT * FROM Recipes ORDER BY RecipeName", conn)
-
-    conn.close()
-
-    # print (l_cocktail_recipes)
-    print(df_cocktail_recipes)
-    return df_cocktail_recipes
-
-
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
     ''' Adds selection and focus behaviour to the view. '''
@@ -74,17 +48,51 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         rv_parent = rv.parent
         rv_grandparent = rv_parent.parent
         print(rv_grandparent.ids)
-        print("Cocktail name", rv_grandparent.ids.selectable_cocktails_list.data[index]["text"])
+        print("Cocktail name", rv_grandparent.ids.selectable_cocktails_list.data[index]['text'])
         print("Type", type(rv_grandparent.ids.selectable_cocktails_list.data))
         print("Type index", type(rv_grandparent.ids.selectable_cocktails_list.data[index]))
 
         for key, value in rv_grandparent.ids.selectable_cocktails_list.data[index].items():
             print(key, value)
 
+        my_string = 'Gin: {Gin}\n' \
+                    + 'Dark rum: {DarkRum}\n' \
+                    + 'Dry Vermouth: {DryVermouth}\n' \
+                    + 'Cointreau: {Cointreau}\n' \
+                    + 'Zitronensaft: {Zitronensaft}\n' \
+                    + 'Ananassaft: {Ananassaft}\n' \
+                    + 'Glas: {Glas}\n' \
+                    + 'Mixen: {Mixen}\n' \
+                    + 'To finish: {ToFinish}\n' \
+                    + 'Deko: {Deko}\n' \
+                    + 'Geschmack: {Geschmack}\n' \
+                    + 'Typ: {Typ}\n' \
+                    + 'Gelegenheit: {Gelegenheit}\n' \
+                    + 'Seite: {Seite}\n' \
+                    + 'Anpassungen: {Anpassungen}\n'
+
+        my_text = my_string.format(
+            Gin=rv_grandparent.ids.selectable_cocktails_list.data[index]["Gin"],
+            DarkRum=rv_grandparent.ids.selectable_cocktails_list.data[index]["DarkRum"],
+            DryVermouth=rv_grandparent.ids.selectable_cocktails_list.data[index]["DryVermouth"],
+            Cointreau=rv_grandparent.ids.selectable_cocktails_list.data[index]["Cointreau"],
+            Zitronensaft=rv_grandparent.ids.selectable_cocktails_list.data[index]["Zitronensaft"],
+            Ananassaft=rv_grandparent.ids.selectable_cocktails_list.data[index]["Ananassaft"],
+            Glas=rv_grandparent.ids.selectable_cocktails_list.data[index]["Glas"],
+            Mixen=rv_grandparent.ids.selectable_cocktails_list.data[index]["Mixen"],
+            ToFinish=rv_grandparent.ids.selectable_cocktails_list.data[index]["ToFinish"],
+            Deko=rv_grandparent.ids.selectable_cocktails_list.data[index]["Deko"],
+            Geschmack=rv_grandparent.ids.selectable_cocktails_list.data[index]["Geschmack"],
+            Typ=rv_grandparent.ids.selectable_cocktails_list.data[index]["Typ"],
+            Gelegenheit=rv_grandparent.ids.selectable_cocktails_list.data[index]["Gelegenheit"],
+            Seite=rv_grandparent.ids.selectable_cocktails_list.data[index]["Seite"],
+            Anpassungen=rv_grandparent.ids.selectable_cocktails_list.data[index]["Anpassungen"]
+        )
+
         for child in rv.parent.children:
             if (isinstance(child, Label)):
                 print(child.text)
-                child.text = self.text
+                child.text = my_text
 
 
 class CocktailsList(BoxLayout):
@@ -105,7 +113,25 @@ class CocktailsScreen(Screen):
 
         for child in self.children:
             if 'selectable_cocktails_list' in child.ids:
-                child.selectable_cocktails.data = [{'text': x['name.text']} for x in my_app.cocktails_list]
+                # The conditional at the end checks if the cocktail contains gin (is not empty).
+                child.selectable_cocktails.data = [{'text': x['RecipeName'],
+                                                    'Gin': x['Gin'],
+                                                    'DarkRum': x['DarkRum'],
+                                                    'DryVermouth': x['DryVermouth'],
+                                                    'Cointreau': x['Cointreau'],
+                                                    'Zitronensaft': x['Zitronensaft'],
+                                                    'Ananassaft': x['Ananassaft'],
+                                                    'Glas': x['Glas'],
+                                                    'Mixen': x['Mixen'],
+                                                    'ToFinish': x['ToFinish'],
+                                                    'Deko': x['Deko'],
+                                                    'Geschmack': x['Geschmack'],
+                                                    'Typ': x['Typ'],
+                                                    'Gelegenheit': x['Gelegenheit'],
+                                                    'Seite': x['Seite'],
+                                                    'Anpassungen': x['Anpassungen']
+
+                                                    } for x in my_app.cocktails_list if x['Gin'].strip() ]
                 break
 
 
@@ -159,8 +185,8 @@ class CocktailsApp(App):
         df = self.read_cocktail_recipes()
 
         # Data needs to be a list of dictionaries
-        thislist = [{'name.text': df.iloc[x].RecipeName,
-                     'value': str(df.iloc[x].RecipeID),
+        thislist = [{'RecipeName': df.iloc[x].RecipeName,
+                     'RecipeID': str(df.iloc[x].RecipeID),
                      'Gin': str(df.iloc[x].Gin),
                      'DarkRum': str(df.iloc[x].DarkRum),
                      'DryVermouth': str(df.iloc[x].DryVermouth),

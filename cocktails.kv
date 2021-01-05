@@ -30,7 +30,7 @@
 #:set strawberry [1.000, 0.161, 0.529, 1]
 #:set cayenne [0.537, 0.067, 0.000, 1]
 #:set mocha [0.537, 0.282, 0.000, 1]
-#:set aspargus [0.533, 0.522, 0.004, 1]
+#:set asparagus [0.533, 0.522, 0.004, 1]
 #:set fern [0.271, 0.518, 0.004, 1]
 #:set clover [0.008, 0.518, 0.004, 1]
 #:set moss [0.004, 0.518, 0.282, 1]
@@ -60,6 +60,13 @@
 #:set primary_magenta [1.000, 0.000, 1.000, 1]
 #:set primary_cyan [1.000, 1.000, 0.000, 1]
 #:set primary_yellow [0.000, 1.000, 1.000, 1]
+
+# ff7b54 / ffb26b / ffd56b / 939b62
+# rgb (255, 123, 84) / (255, 178, 107) / (255, 213, 107) / (147, 155, 98)
+#:set gin_header [1.000, 0.482, 0.329, 1]
+#:set gin_master [1.000, 0.698, 0.420, 1]
+#:set gin_detail [1.000, 0.835, 0.420, 1]
+#:set gin_footer [0.577, 0.608, 0.384, 1]
 
 
 
@@ -414,12 +421,15 @@
     # Draw a background to indicate selection
     canvas.before:
         Color:
-            rgba: (1, 0, 0, 1) if self.selected else (.0, 0.9, .1, .3)
+            # # gin_master [1.000, 0.698, 0.420, 1]
+            # rgba: (1, 0, 0, 1) if self.selected else (.0, 0.9, .1, .3)
+            rgba: (1, 0, 0, 1) if self.selected else (1.000, 0.698, .420, .800)
+            # rgba: (1, 0, 0, 1) if self.selected else (1.000, 0.698, 0.420, 1)
         Rectangle:
             pos: self.pos
             size: self.size
         Color:
-            rgba: (.0, 0.9, .1, .3)
+            rgba: (1.000, 0.698, .420, .800)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -441,7 +451,7 @@
         Label:
             canvas.before:
                 Color:
-                    rgba: tangerine
+                    rgba: gin_header
                 Rectangle:
                     # self here refers to the widget i.e BoxLayout
                     pos: self.pos
@@ -466,7 +476,8 @@
 
             viewclass: 'SelectableLabel'
 
-            SelectableRecycleBoxLayout:
+            SelectableRecycleBoxLayout
+                rgba: gin_footer
                 default_size: None, dp(26)
                 default_size_hint: 1, None
                 size_hint_y: None
@@ -480,34 +491,35 @@
             id: cocktails_details
             canvas.before:
                 Color:
-                    rgba: seafoam
+                    rgba: gin_detail
                 Rectangle:
                     # self here refers to the widget i.e BoxLayout
                     pos: self.pos
                     size: self.size
-            font_size: 50
-            size: self.texture_size
+            font_size: 40
+            #size: self.texture_size
+            text_size: self.size
             text: "Details"
 
     BoxLayout:
         orientation: 'vertical'
         padding: 20
-        spacing: 20
+        spacing: 10
         size_hint: 1, 0.1
 
         Label:
             canvas.before:
                 Color:
-                    rgba: bubblegum
+                    rgba: gin_footer
                 Rectangle:
                     # self here refers to the widget i.e BoxLayout
                     pos: self.pos
                     size: self.size
             font_size: 50
-            size: (100,50)
+            #size: (120,120)
             # size: self.texture_size
-            size_hint_y: None
-            size_hint_max_y: 90
+            size_hint_y: 100
+            #size_hint_max_y: 100
             # height: 200
             halign: 'center'
             valign: 'middle'
