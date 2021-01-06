@@ -112,6 +112,8 @@ class CocktailsList(BoxLayout):
 
 class CocktailsScreen(Screen):
     alcohol: str = None
+    flavour: str = None
+    cocktailtype: str = None
 
     def on_pre_enter(self, *args):
         """
@@ -143,8 +145,81 @@ class CocktailsScreen(Screen):
                                                     'Seite': x['Seite'],
                                                     'Anpassungen': x['Anpassungen']
 
-                                                    } for x in my_app.cocktails_list if x[self.alcohol].strip()]
+                                                    } for x in my_app.cocktails_list \
+                                                   if ((self.alcohol and x[self.alcohol].strip()) or \
+                                                       (self.flavour and self.flavour in x['Geschmack']) or \
+                                                       (self.cocktailtype and self.cocktailtype == x['Typ'].strip()))]
                 break
+
+
+class HerbScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(HerbScreen, self).__init__(**kwargs)
+        self.flavour = 'herb'
+
+
+class WuerzigScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(WuerzigScreen, self).__init__(**kwargs)
+        self.flavour = 'würzig'
+
+
+class TrockenScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(TrockenScreen, self).__init__(**kwargs)
+        self.flavour = 'trocken'
+
+
+class FruchtScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(FruchtScreen, self).__init__(**kwargs)
+        self.flavour = 'früchtig'
+
+
+class FrischScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(FrischScreen, self).__init__(**kwargs)
+        self.flavour = 'frisch'
+
+
+class LieblichScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(LieblichScreen, self).__init__(**kwargs)
+        self.flavour = 'lieblich'
+
+
+class FizzScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(FizzScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Fizz'
+
+class FlipScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(FlipScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Flip'
+
+class LongdrinkScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(LongdrinkScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Longdrink'
+
+
+class ShortdrinkScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(ShortdrinkScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Shortdrink'
+
+
+class SektScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(SektScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Sektcocktail'
+
+
+class SourScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(SourScreen, self).__init__(**kwargs)
+        self.cocktailtype = 'Sour'
 
 
 class GinScreen(CocktailsScreen):

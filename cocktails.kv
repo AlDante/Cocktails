@@ -77,6 +77,18 @@
     RumScreen:
     FlavourScreen:
     TypeScreen:
+    HerbScreen:
+    WuerzigScreen:
+    TrockenScreen:
+    FruchtScreen:
+    FrischScreen:
+    LieblichScreen:
+    FizzScreen
+    FlipScreen
+    LongdrinkScreen
+    ShortdrinkScreen
+    SektScreen
+    SourScreen
 
 <MainScreen>:
     name: "main"
@@ -201,6 +213,7 @@
                 valign: 'middle'
                 text: "herb"
                 #on_press: app.flavour_choice("herb")
+                on_press: app.root.current = "herbcocktails"
 
             Button:
                 background_color: cayenne
@@ -211,6 +224,8 @@
                 valign: 'middle'
                 text: "würzig"
                 #on_press: app.flavour_choice("würzig")
+                on_press: app.root.current = "wuerzigcocktails"
+
 
             Button:
                 background_color: mocha
@@ -221,6 +236,7 @@
                 valign: 'middle'
                 text: "trocken"
                 #on_press: app.flavour_choice("trocken")
+                on_press: app.root.current = "trockencocktails"
 
             Button:
                 background_color: honeydew
@@ -231,6 +247,7 @@
                 valign: 'middle'
                 text: "früchtig"
                 #on_press: app.flavour_choice("früchtig")
+                on_press: app.root.current = "fruchtcocktails"
 
             Button:
                 background_color: lime
@@ -241,6 +258,7 @@
                 valign: 'middle'
                 text: "erfrischend"
                 #on_press: app.flavour_choice("erfrischend")
+                on_press: app.root.current = "frischcocktails"
 
             Button:
                 background_color: bubblegum
@@ -251,6 +269,7 @@
                 valign: 'middle'
                 text: "lieblich"
                 #on_press: app.flavour_choice("lieblich")
+                on_press: app.root.current = "lieblichcocktails"
 
         Button:
             background_color: teal
@@ -266,6 +285,7 @@
 
 <TypeScreen>:
     name: "type"
+    mytext: "Cocktailarten"
 
     #NB: We leave out Crusta here, because there is only one
 
@@ -306,6 +326,8 @@
                 valign: 'middle'
                 text: "Fizz"
                 #on_press: app.type_choice("Fizz")
+                on_press: app.root.current = "fizzes"
+
 
             Button:
                 background_color: magenta
@@ -316,6 +338,8 @@
                 valign: 'middle'
                 text: "Flip"
                 #on_press: app.type_choice("Flip")
+                on_press: app.root.current = "flips"
+
 
             Button:
                 background_color: strawberry
@@ -326,6 +350,7 @@
                 valign: 'middle'
                 text: "Longdrink"
                 #on_press: app.type_choice("Longdrink")
+                on_press: app.root.current = "longdrinks"
 
             Button:
                 background_color: carnation
@@ -336,6 +361,7 @@
                 valign: 'middle'
                 text: "Shortdrink"
                 #on_press: app.type_choice("Shortdrink")
+                on_press: app.root.current = "shortdrinks"
 
             Button:
                 background_color: cantaloupe
@@ -346,6 +372,7 @@
                 valign: 'middle'
                 text: "Sektcocktail"
                 #on_press: app.type_choice("Sektcocktail")
+                on_press: app.root.current = "sektcocktails"
 
             Button:
                 background_color: lime
@@ -356,6 +383,7 @@
                 valign: 'middle'
                 text: "Sour"
                 #on_press: app.type_choice("Sour")
+                on_press: app.root.current = "sours"
 
         Button:
             background_color: teal
@@ -370,14 +398,102 @@
 
 #-------------------------------------------------------
 
+<HerbScreen@CocktailsScreen>:
+    name: "herbcocktails"
+    id: herbcocktails
+    mytext: "Herbe Cocktails"
+
+    CocktailsList:
+
+<WuerzigScreen@CocktailsScreen>:
+    name: "wuerzigcocktails"
+    id: wuerzigcocktails
+    mytext: "Cocktails für das Würzige im Leben"
+
+    CocktailsList:
+
+<TrockenScreen@CocktailsScreen>:
+    name: "trockencocktails"
+    id: trockencocktails
+    mytext: "Willkommen im Sahara"
+
+    CocktailsList:
+
+<FruchtScreen@CocktailsScreen>:
+    name: "fruchtcocktails"
+    id: fruchtcocktails
+    mytext: "Götterfrüchte"
+
+    CocktailsList:
+
+<FrischScreen@CocktailsScreen>:
+    name: "frischcocktails"
+    id: frischcocktails
+    mytext: "Frisch wie Sommertau"
+
+    CocktailsList:
+
+<LieblichScreen@CocktailsScreen>:
+    name: "lieblichcocktails"
+    id: lieblichcocktails
+    mytext: "Anwaltscocktails. Oder war das Liebling?"
+
+    CocktailsList:
+
+<FizzScreen@CocktailsScreen>:
+    name: "fizzes"
+    id: fizzes
+    mytext: "Fizzes"
+
+    CocktailsList:
+
+<FlipScreen@CocktailsScreen>:
+    name: "flips"
+    id: flips
+    mytext: "Mach mir den Banana!"
+
+    CocktailsList:
+
+<LongdrinkScreen@CocktailsScreen>:
+    name: "longdrinks"
+    id: longdrinks
+    mytext: "It's a long and winding road "
+
+    CocktailsList:
+
+<ShortdrinkScreen@CocktailsScreen>:
+    name: "shortdrinks"
+    id: shortdrinks
+    mytext: "Short and sweet. Or not."
+
+    CocktailsList:
+
+<SektScreen@CocktailsScreen>:
+    name: "sektcocktails"
+    id: sektcocktails
+    mytext: "Laßt die Korken knallen!"
+
+    CocktailsList:
+
+<SourScreen@CocktailsScreen>:
+    name: "sours"
+    id: sours
+    mytext: "Sauer Power!"
+
+    CocktailsList:
+
 <RumScreen@CocktailsScreen>:
     name: "rumcocktails"
     id: rumcocktails
+    mytext: "Rum Cocktails"
+
     CocktailsList:
 
 <GinScreen@CocktailsScreen>:
     name: "gincocktails"
     id: gincocktails
+    mytext: "Gin Cocktails"
+
     CocktailsList:
 
 <SelectableLabel>:
@@ -421,7 +537,9 @@
                     size: self.size
             font_size: 50
             size: self.texture_size
-            text: ("Gin Cocktails" if root.parent.name == 'gincocktails' else "Rum Cocktails")
+            #text: ("Gin Cocktails" if root.parent.name == 'gincocktails' else "Rum Cocktails")
+            #text: (root.parent.mytext if root.parent.mytext is not None else "Empty")
+            text: root.parent.mytext
 
     BoxLayout:
         orientation: 'horizontal'
@@ -467,20 +585,27 @@
         spacing: 10
         size_hint: 1, 0.1
 
-        Label:
-            canvas.before:
-                Color:
-                    rgba: gin_footer
-                Rectangle:
-                    # self here refers to the widget i.e BoxLayout
-                    pos: self.pos
-                    size: self.size
+        #Label:
+        #    canvas.before:
+        #        Color:
+        #            rgba: gin_footer
+        #        Rectangle:
+        #            # self here refers to the widget i.e BoxLayout
+        #            pos: self.pos
+        #            size: self.size
+        #    font_size: 50
+        #    size_hint_y: 100
+        #    halign: 'center'
+        #    valign: 'middle'
+        #    text: "Back"
+
+        Button:
+            background_color: gin_footer
+            background_normal: ''
             font_size: 50
-            #size: (120,120)
-            # size: self.texture_size
-            size_hint_y: 100
-            #size_hint_max_y: 100
-            # height: 200
+            text_size: self.size
+            size_hint_y: 0.3
             halign: 'center'
             valign: 'middle'
-            text: "Back"
+            text: "Hauptmenü"
+            on_press: app.root.current = "main"
