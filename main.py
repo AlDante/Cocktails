@@ -14,6 +14,21 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen
 from tabulate import tabulate
 
+"""
+    # kv rules are not applied until the original Widget has finished instantiating. 
+    # This means that ids are only populated when the Manager has finished instantiating.
+    # The following is a solution
+    # https://stackoverflow.com/questions/26916262/why-cant-i-access-the-screen-ids
+    class RootWidget(Screen):
+    def __init__(self, **kwargs):
+        super(RootWidget, self).__init__(**kwargs)
+        Clock.schedule_once(self._finish_init)
+
+    def _finish_init(self, dt):
+        self.grid = self.ids.grid
+        # etc
+"""
+
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -45,12 +60,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         self.selected = is_selected
 
         # Get cocktails list data
-        rv_parent = rv.parent
-        rv_grandparent = rv_parent.parent
-        print(rv_grandparent.ids)
-        print("Cocktail name", rv_grandparent.ids.selectable_cocktails_list.data[index]['text'])
-        print("Type", type(rv_grandparent.ids.selectable_cocktails_list.data))
-        print("Type index", type(rv_grandparent.ids.selectable_cocktails_list.data[index]))
+        rv_grandparent = rv.parent.parent
 
         for key, value in rv_grandparent.ids.selectable_cocktails_list.data[index].items():
             print(key, value)
@@ -89,6 +99,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             Anpassungen=rv_grandparent.ids.selectable_cocktails_list.data[index]["Anpassungen"]
         )
 
+        # Update details window
         for child in rv.parent.children:
             if (isinstance(child, Label)):
                 print(child.text)
@@ -100,8 +111,7 @@ class CocktailsList(BoxLayout):
 
 
 class CocktailsScreen(Screen):
-
-    alcohol:str = None
+    alcohol: str = None
 
     def on_pre_enter(self, *args):
         """
@@ -133,18 +143,21 @@ class CocktailsScreen(Screen):
                                                     'Seite': x['Seite'],
                                                     'Anpassungen': x['Anpassungen']
 
-                                                    } for x in my_app.cocktails_list if x[self.alcohol].strip() ]
+                                                    } for x in my_app.cocktails_list if x[self.alcohol].strip()]
                 break
+
 
 class GinScreen(CocktailsScreen):
     def __init__(self, **kwargs):
         super(GinScreen, self).__init__(**kwargs)
         self.alcohol = 'Gin'
 
+
 class RumScreen(CocktailsScreen):
     def __init__(self, **kwargs):
         super(RumScreen, self).__init__(**kwargs)
         self.alcohol = 'DarkRum'
+
 
 class MainScreen(Screen):
     pass
