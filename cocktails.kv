@@ -73,7 +73,7 @@
 <MyManager>:
     #transition: FadeTransition()
     MainScreen:
-    CocktailsScreen:
+    GinScreen:
     FlavourScreen:
     TypeScreen:
 
@@ -115,7 +115,7 @@
                 halign: 'center'
                 valign: 'middle'
                 text: "Wähle Gin als Basis"
-                on_press: app.root.current = "cocktails"
+                on_press: app.root.current = "gincocktails"
 
 
             Button:
@@ -411,8 +411,8 @@
                 spacing: dp(2)
 #--------------------------------------------
 
-<CocktailsScreen>:
-    name: "cocktails"
+<GinScreen@CocktailsScreen>:
+    name: "gincocktails"
     CocktailsList:
 
 <SelectableLabel>:

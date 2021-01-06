@@ -101,6 +101,8 @@ class CocktailsList(BoxLayout):
 
 class CocktailsScreen(Screen):
 
+    alcohol:str = None
+
     def on_pre_enter(self, *args):
         """
         Populate the list of cocktails in the child widget
@@ -131,9 +133,18 @@ class CocktailsScreen(Screen):
                                                     'Seite': x['Seite'],
                                                     'Anpassungen': x['Anpassungen']
 
-                                                    } for x in my_app.cocktails_list if x['Gin'].strip() ]
+                                                    } for x in my_app.cocktails_list if x[self.alcohol].strip() ]
                 break
 
+class GinScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(GinScreen, self).__init__(**kwargs)
+        self.alcohol = 'Gin'
+
+class RumScreen(CocktailsScreen):
+    def __init__(self, **kwargs):
+        super(RumScreen, self).__init__(**kwargs)
+        self.alcohol = 'DarkRum'
 
 class MainScreen(Screen):
     pass
